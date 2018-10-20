@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { changeValue } from "./reducers";
+import { changeText, submitText } from "./reducers";
 import {Button, FlatList, StyleSheet, Text, TextInput, View} from "react-native";
 
 class App extends React.Component {
@@ -13,10 +13,8 @@ class App extends React.Component {
     }
 
     handleSubmit() {
-        /*this.setState({
-            items: [...this.state.items, { key: `${Math.random()}`, text: this.state.text }],
-            text: "",
-        });*/
+        // console.log("action in hSubmit, this.props.text", this.props.text)
+        this.props.onInputSubmit();
     }
 
     handleRemove(key) {
@@ -36,7 +34,7 @@ class App extends React.Component {
     renderItem(item) {
         return (
             <View style={[styles.row, styles.listItem]}>
-                <Text>{item.item.text}</Text>
+                <Text style={styles.text}>{item.item.text}</Text>
                 <Button
                     onPress={this.handleRemove.bind(this, item.item.key)}
                     title="remove"
@@ -50,7 +48,7 @@ class App extends React.Component {
         return (
             <View style={styles.container}>
                 <TextInput
-                    style={[styles.row]}
+                    style={[styles.row, styles.text]}
                     onChangeText={this.handleChange.bind(this)}
                     onSubmitEditing={this.handleSubmit.bind(this)}
                     value={this.props.text}
@@ -77,13 +75,15 @@ const styles = StyleSheet.create({
         height: 75,
         borderColor: '#e6e6e6',
         borderWidth: 1,
-        fontSize: 25,
     },
     listItem: {
         flex: 1,
         flexDirection: "row",
         justifyContent: "space-between",
     },
+    text: {
+        fontSize: 25,
+    }
 });
 
 const mapStateToProps = state => {
@@ -96,8 +96,11 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
     return {
         onInputChange: text => {
-            dispatch(changeValue(text))
-        }
+            dispatch(changeText(text))
+        },
+        onInputSubmit: data => {
+            dispatch(submitText())
+        },
     }
 };
 

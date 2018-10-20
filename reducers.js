@@ -1,24 +1,37 @@
 const initialState = {
     todos: [],
-    value: "",
+    text: "",
 };
 
 const todos = (state = initialState, action) => {
+    let newState;
     switch (action.type) {
         case 'CHANGE':
-            return Object.assign({}, state, {
-                text: action.text,
-            });
+            newState = { text: action.payload.text };
+            return {...state, ...newState};
+        case 'SUBMIT':
+            const todo = { text: state.text, key: `${Math.random()}` };
+            newState = {
+                todos: [...state.todos, ...[todo]],
+                text: "",
+            };
+            return {...state, ...newState};
         default:
-            return state
+            return state;
     }
 };
 
 export default todos;
 
-export function changeValue(text) {
+export function changeText(text) {
     return {
         type: "CHANGE",
         payload: { text },
+    };
+}
+
+export function submitText() {
+    return {
+        type: "SUBMIT",
     };
 }
