@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { changeText, submitText } from "./reducers";
+import { changeText, submitText, remove } from "./reducers";
 import {Button, FlatList, StyleSheet, Text, TextInput, View} from "react-native";
 
 class App extends React.Component {
@@ -13,22 +13,11 @@ class App extends React.Component {
     }
 
     handleSubmit() {
-        // console.log("action in hSubmit, this.props.text", this.props.text)
         this.props.onInputSubmit();
     }
 
     handleRemove(key) {
-        /*const items = [...this.state.items];
-        for(let i = 0; i < items.length; i++) {
-            if (items[i].key === key) {
-                items.splice(i, 1);
-                break;
-            }
-        }
-
-        this.setState({
-            items: [...items],
-        });*/
+        this.props.onRemove(key);
     }
 
     renderItem(item) {
@@ -96,10 +85,13 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
     return {
         onInputChange: text => {
-            dispatch(changeText(text))
+            dispatch(changeText(text));
         },
         onInputSubmit: data => {
-            dispatch(submitText())
+            dispatch(submitText());
+        },
+        onRemove: key => {
+            dispatch(remove(key));
         },
     }
 };
