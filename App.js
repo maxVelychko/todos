@@ -26,7 +26,6 @@ class App extends React.Component {
     }
 
     renderItem(item) {
-        console.log("action, this.props.status, item.item.status", this.props.status, item.item.status);
         if (this.props.status !== "all" && this.props.status !== item.item.status) {
             return null;
         }
@@ -52,22 +51,26 @@ class App extends React.Component {
     }
 
     render() {
-        console.log("action-render", this.props.status);
+        const todos = this.props.todos;
         return (
             <View style={styles.container}>
-                <TextInput
-                    style={[styles.row, styles.text]}
-                    onChangeText={this.handleChange.bind(this)}
-                    onSubmitEditing={this.handleSubmit.bind(this)}
-                    value={this.props.text}
-                    placeholder="type here"
-                />
-                <FlatList
-                    data={this.props.todos}
-                    renderItem={this.renderItem.bind(this)}
-                />
-                <View style={[styles.row, styles.childrenHorizontaly]}>
-                    <Text style={styles.smallText}>1 item left</Text>
+                <View style={styles.row}>
+                    <TextInput
+                        style={styles.text}
+                        onChangeText={this.handleChange.bind(this)}
+                        onSubmitEditing={this.handleSubmit.bind(this)}
+                        value={this.props.text}
+                        placeholder="type here"
+                    />
+                </View>
+                <View>
+                    <FlatList
+                        data={todos}
+                        extraData={this.props.status}
+                        renderItem={this.renderItem.bind(this)}
+                    />
+                </View>
+                <View style={[styles.row]}>
                     <View style={styles.childrenHorizontaly}>
                         <TouchableHighlight onPress={this.handleChangeStatus.bind(this, "all")}>
                             <Text>All</Text>
@@ -79,6 +82,9 @@ class App extends React.Component {
                             <Text>Completed</Text>
                         </TouchableHighlight>
                     </View>
+                    {
+                        todos.length ? <Text style={styles.smallText}>{`${todos.length} ${todos.length > 1 ? "items" : "item"} left`}</Text> : null
+                    }
                 </View>
             </View>
         );
@@ -90,7 +96,7 @@ const styles = StyleSheet.create({
         flex: 1,
         flexDirection: "column",
         backgroundColor: '#fff',
-        alignItems: 'stretch',
+        justifyContent: 'flex-start',
         padding: 50,
     },
     row: {
@@ -112,7 +118,6 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = state => {
-    console.log("action-mapStateToProps, state.status", state.status)
     return {
         todos: state.todos,
         text: state.text,
