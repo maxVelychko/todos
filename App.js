@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { changeText, submitText, remove, check, changeStatus } from "./reducers";
+import { changeText, submitText, remove, check, changeStatus, clearCompleted } from "./reducers";
 import {Button, FlatList, StyleSheet, Text, TextInput, View, TouchableHighlight} from "react-native";
 import CheckBox from "react-native-check-box";
 
@@ -50,8 +50,13 @@ class App extends React.Component {
         this.props.onChangeStatus(status);
     }
 
+    handleClearCompleted() {
+        this.props.onClearCompleted();
+    }
+
     render() {
         const todos = this.props.todos;
+        const itemsLeft = todos.filter(todo => todo.status === "active").length;
         return (
             <View style={styles.container}>
                 <View style={styles.row}>
@@ -82,9 +87,26 @@ class App extends React.Component {
                             <Text>Completed</Text>
                         </TouchableHighlight>
                     </View>
-                    {
-                        todos.length ? <Text style={styles.smallText}>{`${todos.length} ${todos.length > 1 ? "items" : "item"} left`}</Text> : null
-                    }
+                    <View style={styles.childrenHorizontaly}>
+                        <View>
+                            {itemsLeft ?
+                                (
+                                    <Text style={styles.smallText}>
+                                        {`${itemsLeft} ${itemsLeft > 1 ? "items" : "item"} left`}
+                                    </Text>
+                                ) : null
+                            }
+                        </View>
+                        <View>
+                            {todos.length > itemsLeft ?
+                                (
+                                    <TouchableHighlight onPress={this.handleClearCompleted.bind(this)}>
+                                        <Text>Clear Completed</Text>
+                                    </TouchableHighlight>
+                                ) : null
+                            }
+                        </View>
+                    </View>
                 </View>
             </View>
         );
@@ -130,7 +152,7 @@ const mapDispatchToProps = dispatch => {
         onInputChange: text => {
             dispatch(changeText(text));
         },
-        onInputSubmit: data => {
+        onInputSubmit: () => {
             dispatch(submitText());
         },
         onRemove: key => {
@@ -142,6 +164,9 @@ const mapDispatchToProps = dispatch => {
         onChangeStatus: status => {
             dispatch(changeStatus(status));
         },
+        onClearCompleted: () => {
+            dispatch(clearCompleted());
+        }
     }
 };
 

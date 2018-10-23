@@ -18,22 +18,26 @@ const todos = (state = initialState, action) => {
                 todos: [...state.todos, ...[todo]],
                 text: "",
             };
+
             return {...state, ...newState};
         case 'REMOVE':
             newState = {
                 todos: [...state.todos],
             };
+
             for(let i = 0; i < newState.todos.length; i++) {
                 if (newState.todos[i].key === action.payload.key) {
                     newState.todos.splice(i, 1);
                     break;
                 }
             }
+
             return {...state, ...newState};
         case 'CHECK':
             newState = {
                 todos: [...state.todos],
             };
+
             for(let i = 0; i < newState.todos.length; i++) {
                 if (newState.todos[i].key === action.payload.key) {
                     const checked = !newState.todos[i].checked;
@@ -42,11 +46,35 @@ const todos = (state = initialState, action) => {
                     break;
                 }
             }
+
             return {...state, ...newState};
         case 'CHANGE_STATUS':
             newState = {
                 status: action.payload.status,
             };
+
+            return {...state, ...newState};
+        case 'CLEAR_COMPLETED':
+            newState = {
+                todos: [...state.todos],
+            };
+
+            let needToRemove = true;
+            while(needToRemove) {
+                let wasRemoved = false;
+                for(let i = 0; i < newState.todos.length; i++) {
+                    if (newState.todos[i].status === "completed") {
+                        newState.todos.splice(i, 1);
+                        wasRemoved = true;
+                        break;
+                    }
+                }
+
+                if (!wasRemoved) {
+                    needToRemove = false;
+                }
+            }
+
             return {...state, ...newState};
         default:
             return state;
@@ -86,5 +114,11 @@ export function changeStatus(status) {
     return {
         type: "CHANGE_STATUS",
         payload: { status }
+    };
+}
+
+export function clearCompleted() {
+    return {
+        type: "CLEAR_COMPLETED",
     };
 }
