@@ -2,16 +2,16 @@ import Expo from "expo";
 import React from 'react';
 import { Provider } from "react-redux";
 import { createStore } from 'redux';
-import reducers from "./reducers";
-import App from "./App";
+import todos from "./reducers/todos";
+import AppContainer from "./containers/AppContainer";
 
-const store = createStore(reducers);
+const store = createStore(todos);
 
 class Root extends React.Component {
     render() {
         return (
             <Provider store={store}>
-                <App />
+                <AppContainer />
             </Provider>
         );
     }
