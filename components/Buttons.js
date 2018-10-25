@@ -1,26 +1,35 @@
-import {Text, TouchableHighlight, View} from "react-native";
+import {StyleSheet, Text, TouchableHighlight, View} from "react-native";
 import React from "react";
 
-const Input = (props) => {
+const Buttons = (props) => {
     const itemsLeft = props.todos.filter(todo => todo.status === "active").length;
     return (
-        <View style={props.styles.row}>
-            <View style={props.styles.childrenHorizontaly}>
-                <TouchableHighlight onPress={props.handleChangeStatus.bind(null, "all")}>
+        <View style={styles.buttonsContainer}>
+            <View style={styles.row}>
+                <TouchableHighlight
+                    style={props.status === "all" ? styles.selected : null}
+                    onPress={props.handleChangeStatus.bind(null, "all")}
+                >
                     <Text>All</Text>
                 </TouchableHighlight>
-                <TouchableHighlight onPress={props.handleChangeStatus.bind(null, "active")}>
+                <TouchableHighlight
+                    style={props.status === "active" ? styles.selected : null}
+                    onPress={props.handleChangeStatus.bind(null, "active")}
+                >
                     <Text>Active</Text>
                 </TouchableHighlight>
-                <TouchableHighlight onPress={props.handleChangeStatus.bind(null, "completed")}>
+                <TouchableHighlight
+                    style={props.status === "completed" ? styles.selected : null}
+                    onPress={props.handleChangeStatus.bind(null, "completed")}
+                >
                     <Text>Completed</Text>
                 </TouchableHighlight>
             </View>
-            <View style={props.styles.childrenHorizontaly}>
+            <View style={styles.row}>
                 <View>
                     {itemsLeft ?
                         (
-                            <Text style={props.styles.smallText}>
+                            <Text style={[styles.smallText]}>
                                 {`${itemsLeft} ${itemsLeft > 1 ? "items" : "item"} left`}
                             </Text>
                         ) : null
@@ -40,4 +49,23 @@ const Input = (props) => {
     )
 };
 
-export default Input;
+const styles = StyleSheet.create({
+    buttonsContainer: {
+        height: 75,
+        borderColor: '#e6e6e6',
+        borderWidth: 1,
+    },
+    row: {
+        flexDirection: "row",
+        justifyContent: "space-between",
+    },
+    selected: {
+        borderWidth: 1,
+        borderColor: "rgba(175, 47, 47, 0.2)",
+    },
+    smallText: {
+        fontSize: 14,
+    }
+});
+
+export default Buttons;

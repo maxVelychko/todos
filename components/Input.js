@@ -1,18 +1,32 @@
-import {TextInput, View} from "react-native";
+import {StyleSheet, TextInput, View} from "react-native";
 import React from "react";
 
 const Input = (props) => {
     return (
-        <View style={props.styles.row}>
+        <View style={styles.input}>
             <TextInput
-                style={props.styles.text}
+                style={styles.text}
                 onChangeText={props.handleChange}
                 onSubmitEditing={props.handleSubmit}
                 value={props.value}
-                placeholder="type here"
+                placeholder="What needs to be done"
             />
         </View>
     )
 };
+
+const styles = StyleSheet.create({
+    input: {
+        height: 75,
+        borderColor: '#e6e6e6',
+        borderWidth: 1,
+        justifyContent: 'center',
+        paddingLeft: 30,
+        paddingRight: 20,
+    },
+    text: {
+        fontSize: 24,
+    },
+});
 
 export default Input;
