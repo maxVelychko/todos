@@ -52,20 +52,21 @@ const Buttons = (props) => {
 const styles = StyleSheet.create({
     buttonsContainer: {
         height: 75,
-        borderColor: '#e6e6e6',
-        borderWidth: 1,
     },
     row: {
+        flex: 0.5,
         flexDirection: "row",
         justifyContent: "space-between",
+        alignItems: "center",
+        borderTopWidth: 0,
+        borderColor: '#e6e6e6',
+        borderWidth: 1,
+        paddingHorizontal: 10,
     },
     selected: {
         borderWidth: 1,
         borderColor: "rgba(175, 47, 47, 0.2)",
     },
-    smallText: {
-        fontSize: 14,
-    }
 });
 
 export default Buttons;
