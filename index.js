@@ -5,6 +5,8 @@ import { createStore } from 'redux';
 import todos from "./reducers/todos";
 import AppContainer from "./containers/AppContainer";
 
+// console.disableYellowBox = true;
+
 const store = createStore(todos);
 
 class Root extends React.Component {

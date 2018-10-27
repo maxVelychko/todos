@@ -68,7 +68,7 @@ class App extends React.Component {
                     handleSubmit={this.handleSubmit.bind(this)}
                     value={this.props.text}
                 />
-                <View>
+                <View style={styles.listContainer}>
                     <FlatList
                         data={todos}
                         extraData={this.props.status}
@@ -98,6 +98,9 @@ const styles = StyleSheet.create({
         fontWeight: "100",
         marginBottom: 20,
         fontSize: 48,
+    },
+    listContainer: {
+        maxHeight: 400
     },
     todoListItem: {
         flexDirection: "row",
